@@ -15,24 +15,24 @@
  */
 package com.example.sqlbrite.todo;
 
-import android.app.Application;
-import android.content.Context;
-import timber.log.Timber;
+import com.example.sqlbrite.todo.ui.ItemsFragment;
+import com.example.sqlbrite.todo.ui.ListsFragment;
+import com.example.sqlbrite.todo.ui.NewItemFragment;
+import com.example.sqlbrite.todo.ui.NewListFragment;
 
-public final class TodoApp extends Application {
-  private TodoComponent mainComponent;
+import javax.inject.Singleton;
 
-  @Override public void onCreate() {
-    super.onCreate();
+import dagger.Component;
 
-    if (BuildConfig.DEBUG) {
-      Timber.plant(new Timber.DebugTree());
-    }
+@Singleton
+@Component(modules = TodoModule.class)
+public interface TodoComponent {
 
-    mainComponent = DaggerTodoComponent.builder().todoModule(new TodoModule(this)).build();
-  }
+  void inject(ListsFragment fragment);
 
-  public static TodoComponent getComponent(Context context) {
-    return ((TodoApp) context.getApplicationContext()).mainComponent;
-  }
+  void inject(ItemsFragment fragment);
+
+  void inject(NewItemFragment fragment);
+
+  void inject(NewListFragment fragment);
 }

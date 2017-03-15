@@ -23,9 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+
 import com.example.sqlbrite.todo.db.TodoItem;
+
 import java.util.Collections;
 import java.util.List;
+
 import rx.functions.Action1;
 
 final class ItemsAdapter extends BaseAdapter implements Action1<List<TodoItem>> {

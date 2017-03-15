@@ -1,0 +1,33 @@
+import java.lang.Boolean;
+import java.lang.Integer;
+
+CREATE TABLE todo_item(
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    todo_list_id INTEGER REFERENCES todo_list(_id),
+    description  TEXT NOT NULL,
+    complete INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+-- 根据todo_list_id查询todo_item表的所有的数据
+
+list_query:
+SELECT * FROM todo_item 
+WHERE todo_item.todo_list_id = ? 
+ORDER BY todo_item.complete ASC;
+
+-- 根据todo_list_id查询todo_item表所有的数据的总数
+
+count_query:
+SELECT COUNT(*) FROM todo_item 
+WHERE todo_item.complete = 0 
+AND todo_item.todo_list_id = ?;
+
+-- 插入数据
+
+insert_item:
+INSERT INTO todo_item (todo_list_id,description,complete) VALUES (?,?,?);
+
+-- 更新complete
+
+update_complete:
+UPDATE todo_item SET complete = ? WHERE _id = ?;

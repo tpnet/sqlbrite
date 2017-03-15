@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Sqlbrite-Sqldelight-sample</string>
+
+    <string name="create">创建</string>
+    <string name="cancel">取消</string>
+    <string name="new_list">新建List</string>
+    <string name="new_list_hint">名字</string>
+    <string name="new_item">新建Item</string>
+    <string name="new_item_hint">描述</string>
+</resources>

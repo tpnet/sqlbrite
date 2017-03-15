@@ -1,0 +1,30 @@
+import java.lang.Integer;
+
+CREATE TABLE todo_list(
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    archived TEXT DEFAULT 0
+);
+
+-- 根据_id查询todo_list表的数据的name
+
+title_query:
+SELECT * FROM todo_list WHERE todo_list._id = ?;
+
+-- 根据todo_list的_id分组，选择_id,name,todo_listd _id对应的todo_item的数量 进行返回
+
+list_query:
+SELECT list._id, list.name, COUNT(item._id) as item_count 
+FROM todo_list AS list 
+LEFT OUTER JOIN todo_item AS item ON list._id = item.todo_list_id 
+GROUP BY list._id;
+
+-- 创建单列索引:
+
+create_item_list_id_index:
+CREATE INDEX item_list_id ON todo_item (todo_list_id);
+
+-- 插入数据
+
+insert_list:
+INSERT INTO todo_list (name,archived) VALUES (?,?);

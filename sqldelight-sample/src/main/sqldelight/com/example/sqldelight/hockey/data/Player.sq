@@ -1,0 +1,41 @@
+-- 导包
+
+import com.example.sqldelight.hockey.data.Player;
+import java.util.Calendar;
+
+-- 创建player表
+
+CREATE TABLE player (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    number INTEGER AS Integer NOT NULL,         -- 没有AS Integer将会导致取出数据时候为long
+    team INTEGER,
+    age INTEGER AS Integer NOT NULL,
+    weight REAL AS Float NOT NULL,
+    birth_date INTEGER AS Calendar NOT NULL,      -- 自定义类型
+    shoots TEXT AS Player.Shoots NOT NULL,        -- 自定义枚举类型，射击方向
+    position TEXT AS Player.Position NOT NULL,      -- 自定义枚举类型,位置
+    FOREIGN KEY (team) REFERENCES team(_id)
+);
+
+-- 插入数据到player表
+
+insert_player:
+INSERT INTO player (first_name, last_name, number, team, age, weight, birth_date, shoots, position)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- 从player表查询player.team等于team._id数据，内链接join方式
+
+select_all:
+SELECT *
+FROM player
+JOIN team ON player.team = team._id;
+
+-- 从player表查询player.team等于 指定的team._id数据
+
+for_team:
+SELECT *
+FROM player
+JOIN team ON player.team = team._id
+WHERE team._id = ?;

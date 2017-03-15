@@ -1,0 +1,86 @@
+buildscript {
+    dependencies {
+        classpath rootProject.ext.androidPlugin
+    }
+}
+
+apply plugin: 'com.android.application'
+apply from: rootProject.file('gradle/android-findbugs.gradle')
+
+dependencies {
+    // Android dependencies.
+    compile rootProject.ext.supportV4
+    compile rootProject.ext.supportAnnotations
+
+    // Dagger dependencies.
+    compile rootProject.ext.dagger
+    annotationProcessor rootProject.ext.daggerCompiler
+
+    // Third-party dependencies.
+    compile rootProject.ext.butterKnifeRuntime
+    annotationProcessor rootProject.ext.butterKnifeCompiler
+    compile rootProject.ext.timber
+    compile rootProject.ext.rxJava
+    compile rootProject.ext.rxAndroid
+    compile rootProject.ext.rxBinding
+
+    provided rootProject.ext.autoValue
+    annotationProcessor rootProject.ext.autoValue
+    annotationProcessor rootProject.ext.autoValueParcel
+
+    provided rootProject.ext.findbugsJsr305
+    provided rootProject.ext.findbugsAnnotations
+
+    // In-repo dependencies.
+    compile project(':sqlbrite')
+}
+
+def isCi() {
+    return "true".equals(System.getenv('CI'))
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    lintOptions {
+        textOutput 'stdout'
+        textReport true
+        ignore 'InvalidPackage'
+        // Provided AutoValue pulls in Guava and friends. Doesn't end up in APK.
+    }
+
+    dexOptions {
+        preDexLibraries = !isCi()
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        applicationId 'com.example.sqlbrite.todo'
+
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'android'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.development'
+            signingConfig signingConfigs.debug
+        }
+    }
+}
