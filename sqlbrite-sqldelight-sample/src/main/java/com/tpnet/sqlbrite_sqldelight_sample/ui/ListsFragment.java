@@ -154,6 +154,7 @@ public final class ListsFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread()) //设置订阅者在主线程进行
                 .subscribe(adapter);
     }
+    
 
     @Override
     public void onPause() {

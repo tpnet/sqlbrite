@@ -58,6 +58,7 @@ public final class NewItemFragment extends DialogFragment {
         return fragment;
     }
 
+    
     private final PublishSubject<String> createClicked = PublishSubject.create();
 
     @Inject
