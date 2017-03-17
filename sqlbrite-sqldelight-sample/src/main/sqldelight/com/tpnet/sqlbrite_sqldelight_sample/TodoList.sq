@@ -9,7 +9,7 @@ CREATE TABLE todo_list(
 -- 根据_id查询todo_list表的数据的name
 
 title_query:
-SELECT * FROM todo_list WHERE todo_list._id = ?;
+SELECT name FROM todo_list WHERE todo_list._id = ?;
 
 -- 根据todo_list的_id分组，选择_id,name,todo_listd _id对应的todo_item的数量 进行返回
 

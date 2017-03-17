@@ -33,7 +33,6 @@ import com.squareup.sqldelight.SqlDelightStatement;
 import com.tpnet.sqlbrite_sqldelight_sample.BaseApplication;
 import com.tpnet.sqlbrite_sqldelight_sample.R;
 import com.tpnet.sqlbrite_sqldelight_sample.model.TodoList;
-import com.tpnet.sqlbrite_sqldelight_sample.model.TodoList.ListsItem;
 import com.tpnet.sqlbrite_sqldelight_sample.ui.adapter.ListsAdapter;
 
 import javax.inject.Inject;
@@ -151,7 +150,7 @@ public final class ListsFragment extends Fragment {
         SqlDelightStatement sqLiteStatement = TodoList.FACTORY.list_query();
 
         subscription = db.createQuery(TodoList.TABLE_NAME, sqLiteStatement.statement, sqLiteStatement.args)
-                .mapToList(ListsItem.MAPPER)   //映射到ListItem的MAPPER
+                .mapToList(TodoList.LIST_ITEM_FUNC)   //映射到ListItem的MAPPER
                 .observeOn(AndroidSchedulers.mainThread()) //设置订阅者在主线程进行
                 .subscribe(adapter);
     }

@@ -17,7 +17,6 @@ package com.tpnet.sqlbrite_sqldelight_sample.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -181,18 +180,12 @@ public final class ItemsFragment extends Fragment {
         SqlDelightStatement countQuery = TodoItem.FACTORY.count_query(getListId());
 
         //查询todo_item表的对应todo_list_id的总数
-        Observable<Integer> itemCount = db.createQuery(TodoItem.TABLE_NAME, countQuery.statement, countQuery.args)
-                .map(new Func1<Query, Integer>() {
+        Observable<Long> itemCount = db.createQuery(TodoItem.TABLE_NAME, countQuery.statement, countQuery.args)
+                .map(new Func1<Query, Long>() {
                     @SuppressLint("NewApi")
                     @Override
-                    public Integer call(Query query) {
-                        try (Cursor cursor = query.run()) {
-                            if (!cursor.moveToNext()) {
-                                throw new AssertionError("No rows");
-                            }
-                            return cursor.getInt(0);
-                        }
-
+                    public Long call(Query query) {
+                        return TodoItem.ROW_COUNT_QUERY_MAPPER.map(query.run());
                     }
                 });
 
@@ -202,27 +195,21 @@ public final class ItemsFragment extends Fragment {
 
         //根据_id查询todo_list表的数据的name
         Observable<String> listName =
-                db.createQuery(TodoList.TABLE_NAME, titleQuery.statement, titleQuery.args).map(new Func1<Query, String>() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    public String call(Query query) {
-
-                        try (Cursor cursor = query.run()) {
-                            if (!cursor.moveToNext()) {
-                                throw new AssertionError("No rows");
+                db.createQuery(TodoList.TABLE_NAME, titleQuery.statement, titleQuery.args)
+                        .map(new Func1<Query, String>() {
+                            @SuppressLint("NewApi")
+                            @Override
+                            public String call(Query query) {
+                                return TodoList.ROW_TITLE_MAPPER.map(query.run());
                             }
-                            return cursor.getString(0);
-                        }
-
-                    }
-                });
+                        });
 
 
         //取得对应list的名字和todo_item表对应的数量数量作为标题。
         subscriptions.add(
-                Observable.combineLatest(listName, itemCount, new Func2<String, Integer, String>() {
+                Observable.combineLatest(listName, itemCount, new Func2<String, Long, String>() {
                     @Override
-                    public String call(String listName, Integer itemCount) {
+                    public String call(String listName, Long itemCount) {
                         return listName + " (" + itemCount + ")";
                     }
                 })
