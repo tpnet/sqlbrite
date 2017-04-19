@@ -17,6 +17,7 @@ package com.tpnet.sqlbrite_sqldelight_sample.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -185,7 +186,10 @@ public final class ItemsFragment extends Fragment {
                     @SuppressLint("NewApi")
                     @Override
                     public Long call(Query query) {
-                        return TodoItem.ROW_COUNT_QUERY_MAPPER.map(query.run());
+
+                        Cursor cursor = query.run();
+                        cursor.moveToFirst();
+                        return TodoItem.ROW_COUNT_QUERY_MAPPER.map(cursor);
                     }
                 });
 
@@ -200,7 +204,12 @@ public final class ItemsFragment extends Fragment {
                             @SuppressLint("NewApi")
                             @Override
                             public String call(Query query) {
-                                return TodoList.ROW_TITLE_MAPPER.map(query.run());
+
+                                Cursor cursor = query.run();
+
+                                cursor.moveToFirst();
+
+                                return TodoList.ROW_TITLE_MAPPER.map(cursor);
                             }
                         });
 

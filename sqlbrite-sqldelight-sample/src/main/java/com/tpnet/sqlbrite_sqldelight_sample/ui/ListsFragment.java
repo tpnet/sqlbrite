@@ -133,6 +133,7 @@ public final class ListsFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
+
     @OnItemClick(android.R.id.list)
     void listClicked(long listId) {
         listener.onListClicked(listId);

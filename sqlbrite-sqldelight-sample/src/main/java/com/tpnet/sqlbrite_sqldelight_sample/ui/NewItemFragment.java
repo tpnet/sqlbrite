@@ -48,6 +48,7 @@ import static butterknife.ButterKnife.findById;
 public final class NewItemFragment extends DialogFragment {
     private static final String KEY_LIST_ID = "list_id";
 
+
     //单例
     public static NewItemFragment newInstance(long listId) {
         Bundle arguments = new Bundle();
