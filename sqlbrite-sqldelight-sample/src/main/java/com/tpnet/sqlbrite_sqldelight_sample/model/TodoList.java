@@ -12,6 +12,7 @@ import com.tpnet.sqlbrite_sqldelight_sample.TodoListModel;
 import rx.functions.Func1;
 
 /**
+ * 
  * Created by litp on 2017/3/15.
  */
 
